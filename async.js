@@ -17,7 +17,7 @@ function runParallel(jobs, parallelNum) {
     return new Promise((resolve) => {
         // проверяю, если jobs пуст, тогда возвращаю []
         if (jobs.length === 0) {
-            resolve(result);
+            resolve([]);
         }
         // создаю promise на каждый язык в jobs
         let promisesWithTimeout = jobs.map((job) => () =>
