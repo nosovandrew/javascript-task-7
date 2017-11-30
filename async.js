@@ -24,7 +24,7 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
             new Promise((_resolve, reject) => {
                 job().then(_resolve, reject);
                 // если выремя дошло до timeout, тогда reject с ошибкой
-                setTimeout(() => reject(new Error('PROMISE TIMEOUT!!!')), timeout);
+                setTimeout(reject, timeout, new Error('PROMISE TIMEOUT!'));
             })
         );
         // для каждого эл. в jobs вызывается обработчик
