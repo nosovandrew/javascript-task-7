@@ -16,7 +16,7 @@ function runParallel(jobs, parallelNum) {
 
     return new Promise((resolve) => {
         // проверяю, если jobs пуст, тогда возвращаю []
-        if (!jobs.length || parallelNum <= 0) {
+        if (jobs.length === 0) {
             resolve([]);
         }
         // создаю promise на каждый язык в jobs
@@ -31,7 +31,8 @@ function runParallel(jobs, parallelNum) {
             let handler = function (data) {
                 checker(data, i);
             };
-            job().then(handler);
+            job().then(handler)
+                .catch(handler);
         }
         // проверяет, когда можно закончить перевод
         function checker(data, index) {
