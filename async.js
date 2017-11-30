@@ -9,7 +9,7 @@ exports.runParallel = runParallel;
  * @param {Number} timeout - таймаут работы промиса
  */
 
-function runParallel(jobs, parallelNum, timeout = 1000) {
+function runParallel(jobs, parallelNum) {
     let result = []; // массив с результатами
     let jobCounter = 0; // текущий элемент jobs
     let end = 0; // условие конца
