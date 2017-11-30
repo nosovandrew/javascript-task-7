@@ -1,6 +1,6 @@
 'use strict';
 
-exports.isStar = false;
+exports.isStar = true;
 exports.runParallel = runParallel;
 
 /** Функция паралелльно запускает указанное число промисов
@@ -9,7 +9,7 @@ exports.runParallel = runParallel;
  * @param {Number} timeout - таймаут работы промиса
  */
 
-function runParallel(jobs, parallelNum) {
+function runParallel(jobs, parallelNum, timeout = 1000) {
     let result = []; // массив с результатами
     let jobCounter = 0; // текущий элемент jobs
     let end = 0; // условие конца
@@ -23,6 +23,8 @@ function runParallel(jobs, parallelNum) {
         let promisesWithTimeout = jobs.map((job) => () =>
             new Promise((_resolve, reject) => {
                 job().then(_resolve, reject);
+                // если выремя дошло до timeout, тогда reject с ошибкой
+                setTimeout(() => reject(new Error('PROMISE TIMEOUT!!!')), timeout);
             })
         );
         // для каждого эл. в jobs вызывается обработчик
