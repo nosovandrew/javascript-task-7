@@ -21,25 +21,22 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
         }
         // создаю promise на каждый язык в jobs
         let promisesWithTimeout = jobs.map((job) => () =>
-            new Promise((_resolve, reject) => {
-                job().then(_resolve, reject);
+            new Promise((jobResolve, jobReject) => {
+                job().then(jobResolve, jobReject);
                 // если выремя дошло до timeout, тогда reject с ошибкой
-                setTimeout(reject, timeout, new Error('PROMISE TIMEOUT!'));
+                setTimeout(jobReject, timeout, new Error('Promise timeout'));
             })
         );
         // для каждого эл. в jobs вызывается обработчик
         function translator(job) {
-            let i = jobCounter++;
-            let handler = function (data) {
-                checker(data, i);
-            };
+            let handler = data => checker(data, jobCounter++);
             job().then(handler)
                 .catch(handler);
         }
         // проверяет, когда можно закончить перевод
         function checker(data, index) {
             result[index] = data;
-            end = end + 1;
+            end += 1;
             if (jobs.length === end) {
                 resolve(result);
             }
