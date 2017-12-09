@@ -23,13 +23,14 @@ function runParallel(jobs, parallelNum, timeout = 1000) {
         let promisesWithTimeout = jobs.map((job) => () =>
             new Promise((jobResolve, jobReject) => {
                 job().then(jobResolve, jobReject);
-                // если выремя дошло до timeout, тогда reject с ошибкой
+                // если выремя дошло до timeout, тогда jobReject с ошибкой
                 setTimeout(jobReject, timeout, new Error('Promise timeout'));
             })
         );
         // для каждого эл. в jobs вызывается обработчик
         function translator(job) {
-            let handler = data => checker(data, jobCounter++);
+            let i = jobCounter++;
+            let handler = data => checker(data, i);
             job().then(handler)
                 .catch(handler);
         }
